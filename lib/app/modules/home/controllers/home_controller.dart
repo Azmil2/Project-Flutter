@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:project_latihan/app/modules/dashboard/views/dashboard_view.dart';
 import '../../login/views/login_view.dart';
 
 class HomeController extends GetxController {
@@ -12,19 +13,14 @@ class HomeController extends GetxController {
   final authToken = GetStorage();
   @override
   void onInit() {
-    _pindah = Timer.periodic(
+   _pindah = Timer.periodic(
   const Duration(seconds: 4),
-  (timer) => Get.off(
-    () =>  LoginView(),
-    transition: Transition.leftToRight,
-  ),
-  // late Timer _pindah = Timer.periodic(
-  //   const Duration(seconds: 4),
-  //   (timer) => Get.off(
-  //     () => LoginView(),
-  //     transition: Transition.leftToRight,
-  //   ),
-  // );
+  (timer) => authToken.read('token') == null
+      ? Get.off(
+          () =>  LoginView(),
+          transition: Transition.leftToRight,
+        )
+      : Get.off(() =>  DashboardView()),
 );
     super.onInit();
   }
